@@ -11,6 +11,7 @@ public class Frame extends JFrame {
         this.setSize(900, 600);
         this.setLayout(new BorderLayout());
         this.setBackground(Color.BLACK);
+        this.setLocationRelativeTo(null);
 
         ImageIcon icon = new ImageIcon("logo.jpg");
         this.setIconImage(icon.getImage());

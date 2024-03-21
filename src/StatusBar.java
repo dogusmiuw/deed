@@ -20,4 +20,8 @@ public class StatusBar extends JPanel {
         this.add(message);
         f.add(this, BorderLayout.SOUTH);
     }
+
+    public void setMessage(String msg) {
+        message.setText(msg);
+    }
 }
