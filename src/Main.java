@@ -7,6 +7,8 @@ public class Main {
     public static void main(String[] args) {
         Frame f = new Frame();
 
+        MenuBar menuBar = new MenuBar();
+
         EditorArea editorArea = new EditorArea();
         Editor editor = new Editor(f, editorArea);
         ScrollPane scrollPane = new ScrollPane(editor);
@@ -14,6 +16,7 @@ public class Main {
         FileTree fileTree = new FileTree(f);
         StatusBar statusBar = new StatusBar(f);
 
+        f.setJMenuBar(menuBar);
         f.add(scrollPane);
         f.setVisible(true);
     }
