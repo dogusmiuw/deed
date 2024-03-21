@@ -1,3 +1,5 @@
+import javax.swing.JFrame;
+
 /**
  * @author dous
  * @since 1.0
@@ -5,7 +7,7 @@
 public class Main {
     @SuppressWarnings("unused")
     public static void main(String[] args) {
-        Frame f = new Frame();
+        JFrame f = new Frame();
 
         MenuBar menuBar = new MenuBar();
 

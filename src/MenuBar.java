@@ -1,27 +1,51 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class MenuBar extends JMenuBar {
+public class MenuBar extends JMenuBar implements ActionListener {
+    JMenu fileMenu;
+    JMenu editMenu;
+    JMenu helpMenu;
+
+    JMenuItem openFileItem;
+    JMenuItem saveFileItem;
+    JMenuItem exitItem;
+
     public MenuBar() {
         super();
 
-        JMenu fileMenu = new JMenu("File");
-        JMenu editMenu = new JMenu("Edit");
-        JMenu helpMenu = new JMenu("Help");
+        fileMenu = new JMenu("File");
+        editMenu = new JMenu("Edit");
+        helpMenu = new JMenu("Help");
 
-        JMenuItem newFile = new JMenuItem("New File");
-        JMenuItem openFile = new JMenuItem("Open File");
-        JMenuItem saveFile = new JMenuItem("Save File");
-        JMenuItem exit = new JMenuItem("Exit");
+        openFileItem = new JMenuItem("Open File");
+        saveFileItem = new JMenuItem("Save File");
+        exitItem = new JMenuItem("Exit");
 
-        fileMenu.add(newFile);
-        fileMenu.add(openFile);
-        fileMenu.add(saveFile);
-        fileMenu.add(exit);
+        openFileItem.addActionListener(this);
+        saveFileItem.addActionListener(this);
+        exitItem.addActionListener(this);
+
+        fileMenu.add(openFileItem);
+        fileMenu.add(saveFileItem);
+        fileMenu.add(exitItem);
 
         this.add(fileMenu);
         this.add(editMenu);
         this.add(helpMenu);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == openFileItem) {
+            System.out.println("Open File");
+        } else if (e.getSource() == saveFileItem) {
+            System.out.println("Save File");
+        } else if (e.getSource() == exitItem) {
+            System.out.println("Exit");
+        }
     }
 }
