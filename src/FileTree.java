@@ -9,7 +9,7 @@ public class FileTree extends JPanel {
     public FileTree(JFrame f) {
         super();
         this.setBackground(new Color(0x1e1e1e));
-        this.setPreferredSize(new Dimension(200, 100));
+        this.setPreferredSize(new Dimension(275, 100));
         f.add(this, BorderLayout.WEST);
     }
 }
