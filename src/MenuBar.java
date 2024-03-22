@@ -1,11 +1,16 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -29,6 +34,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     File currentFile;
     Scanner sc;
+
+    StringBuilder filesInCurrentDirectoryText = new StringBuilder();
 
     public MenuBar(JFrame f, EditorArea editorArea, StatusBar statusBar, FileTree fileTree) {
         super();
@@ -71,6 +78,13 @@ public class MenuBar extends JMenuBar implements ActionListener {
         }
     }
 
+    public Set<String> listFilesUsingJavaIO(String dir) {
+        return Stream.of(new File(dir).listFiles())
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .collect(Collectors.toSet());
+    }
+
     public void saveFile() {
         if (currentFile == null) {
             JFileChooser fc = new JFileChooser();
@@ -80,6 +94,24 @@ public class MenuBar extends JMenuBar implements ActionListener {
             if (res == JFileChooser.APPROVE_OPTION) {
                 currentFile = fc.getSelectedFile();
 
+                filesInCurrentDirectoryText.append("<html><p style='width: 200px'>");
+
+                for (String e : listFilesUsingJavaIO(currentFile.getParent().toString())) {
+                    if (e.contains(".")) {
+                        if (e.length() > 20) {
+                            filesInCurrentDirectoryText
+                                    .append(e.substring(0, 22) + "..." + e.substring(e.length() - 4, e.length())
+                                            + "<br/>");
+                        } else {
+                            filesInCurrentDirectoryText.append(e + "<br/>");
+                        }
+                    }
+                }
+
+                filesInCurrentDirectoryText.append("</p></html>");
+
+                fileTree.filesInCurrentDirectoryText.setText(filesInCurrentDirectoryText.toString());
+
                 try {
                     FileWriter fw = new FileWriter(currentFile);
 
@@ -87,6 +119,12 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
                     fw.close();
 
+                    String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
+
+                    fileTree.workingDirectoryText
+                            .setText(
+                                    dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1] + " / "
+                                            + currentFile.getName());
                     statusBar.setMessage("File saved. => " + currentFile.getName());
                 } catch (IOException e1) {
                     statusBar.setMessage("Save operation failed. => " + currentFile.getName());
@@ -115,6 +153,23 @@ public class MenuBar extends JMenuBar implements ActionListener {
         if (res == JFileChooser.APPROVE_OPTION) {
             currentFile = fc.getSelectedFile();
 
+            filesInCurrentDirectoryText.append("<html><p style='width: 200px'>");
+
+            for (String e : listFilesUsingJavaIO(currentFile.getParent().toString())) {
+                if (e.contains(".")) {
+                    if (e.length() > 20) {
+                        filesInCurrentDirectoryText
+                                .append(e.substring(0, 22) + "..." + e.substring(e.length() - 4, e.length()) + "<br/>");
+                    } else {
+                        filesInCurrentDirectoryText.append(e + "<br/>");
+                    }
+                }
+            }
+
+            filesInCurrentDirectoryText.append("</p></html>");
+
+            fileTree.filesInCurrentDirectoryText.setText(filesInCurrentDirectoryText.toString());
+
             try {
                 sc = new Scanner(currentFile);
                 editorArea.setText("");
@@ -125,7 +180,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
                 String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
 
-                fileTree.workingDirectory
+                fileTree.workingDirectoryText
                         .setText(
                                 dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1] + " / "
                                         + currentFile.getName());

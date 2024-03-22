@@ -5,6 +5,7 @@ import javax.swing.JFrame;
  * @since 1.0
  */
 public class Main {
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         JFrame f = new Frame();
 
@@ -16,6 +17,8 @@ public class Main {
         StatusBar statusBar = new StatusBar(f);
 
         MenuBar menuBar = new MenuBar(f, editorArea, statusBar, fileTree);
+
+        Hotkeys hotkeys = new Hotkeys(f, editorArea, menuBar, statusBar);
 
         f.setJMenuBar(menuBar);
         f.add(scrollPane);

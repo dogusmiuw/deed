@@ -8,18 +8,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class FileTree extends JPanel {
-    JLabel workingDirectory;
+    JLabel workingDirectoryText;
+    JLabel filesInCurrentDirectoryText;
 
     public FileTree(JFrame f) {
         super();
         this.setBackground(new Color(0x1e1e1e));
-        this.setPreferredSize(new Dimension(275, 100));
+        this.setPreferredSize(new Dimension(300, 100));
 
-        workingDirectory = new JLabel("");
-        workingDirectory.setForeground(Color.WHITE);
-        workingDirectory.setFont(new Font("Consolas", Font.BOLD, 14));
+        workingDirectoryText = new JLabel("");
+        workingDirectoryText.setForeground(Color.WHITE);
+        workingDirectoryText.setFont(new Font("Consolas", Font.BOLD, 16));
 
-        this.add(workingDirectory);
+        filesInCurrentDirectoryText = new JLabel("");
+        filesInCurrentDirectoryText.setForeground(Color.WHITE);
+        filesInCurrentDirectoryText.setFont(new Font("Consolas", Font.BOLD, 14));
+
+        this.add(workingDirectoryText);
+        this.add(filesInCurrentDirectoryText);
         f.add(this, BorderLayout.WEST);
     }
 }

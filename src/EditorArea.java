@@ -1,14 +1,17 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class EditorArea extends JTextArea {
-
     public EditorArea() {
         super("Welcome to Deed!\nEdit me!\n");
+        JTextArea ref = this;
+
         // set caret position to the end of the text
         this.setCaretPosition(this.getText().length());
         this.setForeground(Color.WHITE);
@@ -20,6 +23,33 @@ public class EditorArea extends JTextArea {
         this.setBorder(BorderFactory.createCompoundBorder(
                 this.getBorder(),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+
+        this.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                ref.requestFocus();
+                Hotkeys.isCmdFocused = false;
+                Hotkeys.isEditorAreaFocused = true;
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+        });
     }
 }
 
