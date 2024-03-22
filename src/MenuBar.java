@@ -62,43 +62,23 @@ public class MenuBar extends JMenuBar implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == openFileItem) {
-            System.out.println("Open File");
-
-            JFileChooser fc = new JFileChooser();
-
-            int res = fc.showOpenDialog(null);
-
-            if (res == JFileChooser.APPROVE_OPTION) {
-                currentFile = fc.getSelectedFile();
-
-                try {
-                    sc = new Scanner(currentFile);
-                    editorArea.setText("");
-
-                    while (sc.hasNextLine()) {
-                        editorArea.append(sc.nextLine() + "\n");
-                    }
-
-                    String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
-
-                    fileTree.workingDirectory
-                            .setText(
-                                    dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1] + " / "
-                                            + currentFile.getName());
-                } catch (FileNotFoundException e1) {
-                    statusBar.setMessage("File not found. => " + currentFile.getAbsolutePath());
-                }
-            }
+            openFile();
         } else if (e.getSource() == saveFileItem) {
-            System.out.println("Save File");
+            saveFile();
+        } else if (e.getSource() == exitItem) {
+            System.out.println("Bye");
+            f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+        }
+    }
 
+    public void saveFile() {
+        if (currentFile == null) {
             JFileChooser fc = new JFileChooser();
 
             int res = fc.showSaveDialog(null);
 
             if (res == JFileChooser.APPROVE_OPTION) {
                 currentFile = fc.getSelectedFile();
-                System.out.println(currentFile.getAbsolutePath());
 
                 try {
                     FileWriter fw = new FileWriter(currentFile);
@@ -112,9 +92,46 @@ public class MenuBar extends JMenuBar implements ActionListener {
                     statusBar.setMessage("Save operation failed. => " + currentFile.getName());
                 }
             }
-        } else if (e.getSource() == exitItem) {
-            System.out.println("Bye");
-            f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+        } else {
+            try {
+                FileWriter fw = new FileWriter(currentFile);
+
+                fw.write(editorArea.getText());
+
+                fw.close();
+
+                statusBar.setMessage("File saved. => " + currentFile.getName());
+            } catch (IOException e1) {
+                statusBar.setMessage("Save operation failed. => " + currentFile.getName());
+            }
+        }
+    }
+
+    public void openFile() {
+        JFileChooser fc = new JFileChooser();
+
+        int res = fc.showOpenDialog(null);
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+            currentFile = fc.getSelectedFile();
+
+            try {
+                sc = new Scanner(currentFile);
+                editorArea.setText("");
+
+                while (sc.hasNextLine()) {
+                    editorArea.append(sc.nextLine() + "\n");
+                }
+
+                String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
+
+                fileTree.workingDirectory
+                        .setText(
+                                dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1] + " / "
+                                        + currentFile.getName());
+            } catch (FileNotFoundException e1) {
+                statusBar.setMessage("File not found. => " + currentFile.getAbsolutePath());
+            }
         }
     }
 }
