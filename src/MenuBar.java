@@ -27,7 +27,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
     StatusBar statusBar;
     FileTree fileTree;
 
-    File file;
+    File currentFile;
     Scanner sc;
 
     public MenuBar(JFrame f, EditorArea editorArea, StatusBar statusBar, FileTree fileTree) {
@@ -69,23 +69,24 @@ public class MenuBar extends JMenuBar implements ActionListener {
             int res = fc.showOpenDialog(null);
 
             if (res == JFileChooser.APPROVE_OPTION) {
-                file = fc.getSelectedFile();
+                currentFile = fc.getSelectedFile();
 
                 try {
-                    sc = new Scanner(file);
+                    sc = new Scanner(currentFile);
                     editorArea.setText("");
 
                     while (sc.hasNextLine()) {
                         editorArea.append(sc.nextLine() + "\n");
                     }
 
-                    statusBar.setMessage(file.getName());
-                    String[] dirPath = file.getParent().toString().replace("\\", "/").split("/");
+                    String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
 
                     fileTree.workingDirectory
-                            .setText(dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1]);
+                            .setText(
+                                    dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1] + " / "
+                                            + currentFile.getName());
                 } catch (FileNotFoundException e1) {
-                    statusBar.setMessage("File not found. => " + file.getAbsolutePath());
+                    statusBar.setMessage("File not found. => " + currentFile.getAbsolutePath());
                 }
             }
         } else if (e.getSource() == saveFileItem) {
@@ -96,19 +97,19 @@ public class MenuBar extends JMenuBar implements ActionListener {
             int res = fc.showSaveDialog(null);
 
             if (res == JFileChooser.APPROVE_OPTION) {
-                file = fc.getSelectedFile();
-                System.out.println(file.getAbsolutePath());
+                currentFile = fc.getSelectedFile();
+                System.out.println(currentFile.getAbsolutePath());
 
                 try {
-                    FileWriter fw = new FileWriter(file);
+                    FileWriter fw = new FileWriter(currentFile);
 
                     fw.write(editorArea.getText());
 
                     fw.close();
 
-                    statusBar.setMessage("File saved. => " + file.getName());
+                    statusBar.setMessage("File saved. => " + currentFile.getName());
                 } catch (IOException e1) {
-                    statusBar.setMessage("Save operation failed. => " + file.getName());
+                    statusBar.setMessage("Save operation failed. => " + currentFile.getName());
                 }
             }
         } else if (e.getSource() == exitItem) {
