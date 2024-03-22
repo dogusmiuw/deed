@@ -25,16 +25,18 @@ public class MenuBar extends JMenuBar implements ActionListener {
     JFrame f;
     EditorArea editorArea;
     StatusBar statusBar;
+    FileTree fileTree;
 
     File file;
     Scanner sc;
 
-    public MenuBar(JFrame f, EditorArea editorArea, StatusBar statusBar) {
+    public MenuBar(JFrame f, EditorArea editorArea, StatusBar statusBar, FileTree fileTree) {
         super();
 
         this.f = f;
         this.editorArea = editorArea;
         this.statusBar = statusBar;
+        this.fileTree = fileTree;
 
         fileMenu = new JMenu("File");
         editMenu = new JMenu("Edit");
@@ -78,6 +80,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
                     }
 
                     statusBar.setMessage(file.getName());
+                    String[] dirPath = file.getParent().toString().replace("\\", "/").split("/");
+
+                    fileTree.workingDirectory
+                            .setText(dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1]);
                 } catch (FileNotFoundException e1) {
                     statusBar.setMessage("File not found. => " + file.getAbsolutePath());
                 }

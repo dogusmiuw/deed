@@ -5,7 +5,6 @@ import javax.swing.JFrame;
  * @since 1.0
  */
 public class Main {
-    @SuppressWarnings("unused")
     public static void main(String[] args) {
         JFrame f = new Frame();
 
@@ -16,7 +15,7 @@ public class Main {
         FileTree fileTree = new FileTree(f);
         StatusBar statusBar = new StatusBar(f);
 
-        MenuBar menuBar = new MenuBar(f, editorArea, statusBar);
+        MenuBar menuBar = new MenuBar(f, editorArea, statusBar, fileTree);
 
         f.setJMenuBar(menuBar);
         f.add(scrollPane);
