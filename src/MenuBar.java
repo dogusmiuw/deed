@@ -94,30 +94,30 @@ public class MenuBar extends JMenuBar implements ActionListener {
             if (res == JFileChooser.APPROVE_OPTION) {
                 currentFile = fc.getSelectedFile();
 
-                filesInCurrentDirectoryText.append("<html><p style='width: 200px'>");
-
-                for (String e : listFilesUsingJavaIO(currentFile.getParent().toString())) {
-                    if (e.contains(".")) {
-                        if (e.length() > 20) {
-                            filesInCurrentDirectoryText
-                                    .append(e.substring(0, 22) + "..." + e.substring(e.length() - 4, e.length())
-                                            + "<br/>");
-                        } else {
-                            filesInCurrentDirectoryText.append(e + "<br/>");
-                        }
-                    }
-                }
-
-                filesInCurrentDirectoryText.append("</p></html>");
-
-                fileTree.filesInCurrentDirectoryText.setText(filesInCurrentDirectoryText.toString());
-
                 try {
                     FileWriter fw = new FileWriter(currentFile);
 
                     fw.write(editorArea.getText());
 
                     fw.close();
+
+                    filesInCurrentDirectoryText.append("<html><p style='width: 200px'>");
+
+                    for (String e : listFilesUsingJavaIO(currentFile.getParent().toString())) {
+                        if (e.contains(".")) {
+                            if (e.length() > 20) {
+                                filesInCurrentDirectoryText
+                                        .append(e.substring(0, 22) + "..." + e.substring(e.length() - 4, e.length())
+                                                + "<br/>");
+                            } else {
+                                filesInCurrentDirectoryText.append(e + "<br/>");
+                            }
+                        }
+                    }
+
+                    filesInCurrentDirectoryText.append("</p></html>");
+
+                    fileTree.filesInCurrentDirectoryText.setText(filesInCurrentDirectoryText.toString());
 
                     String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
 
