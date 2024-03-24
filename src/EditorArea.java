@@ -9,7 +9,9 @@ import javax.swing.JTextArea;
 
 public class EditorArea extends JTextArea {
     public EditorArea() {
-        super("Welcome to Deed!\nEdit me!\n");
+        super("Welcome to Deed!\n" +
+                "=> Open a new file\n" +
+                "=> or Edit this file and save!");
         JTextArea ref = this;
 
         // set caret position to the end of the text
