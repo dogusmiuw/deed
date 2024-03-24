@@ -28,12 +28,12 @@ public class MenuBar extends JMenuBar implements ActionListener {
     JMenuItem exitItem;
 
     JFrame f;
-    EditorArea editorArea;
-    StatusBar statusBar;
+    static EditorArea editorArea;
+    static StatusBar statusBar;
     FileTree fileTree;
 
-    File currentFile;
-    Scanner sc;
+    static File currentFile;
+    static Scanner sc;
 
     StringBuilder filesInCurrentDirectoryText = new StringBuilder();
 
@@ -41,8 +41,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
         super();
 
         this.f = f;
-        this.editorArea = editorArea;
-        this.statusBar = statusBar;
+        MenuBar.editorArea = editorArea;
+        MenuBar.statusBar = statusBar;
         this.fileTree = fileTree;
 
         fileMenu = new JMenu("File");
@@ -170,23 +170,28 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
             fileTree.filesInCurrentDirectoryText.setText(filesInCurrentDirectoryText.toString());
 
-            try {
-                sc = new Scanner(currentFile);
-                editorArea.setText("");
+            insertFileContentIntoEditorArea();
 
-                while (sc.hasNextLine()) {
-                    editorArea.append(sc.nextLine() + "\n");
-                }
+            String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
 
-                String[] dirPath = currentFile.getParent().toString().replace("\\", "/").split("/");
+            fileTree.workingDirectoryText
+                    .setText(
+                            dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1] + " / "
+                                    + currentFile.getName());
+        }
+    }
 
-                fileTree.workingDirectoryText
-                        .setText(
-                                dirPath[dirPath.length - 2] + " / " + dirPath[dirPath.length - 1] + " / "
-                                        + currentFile.getName());
-            } catch (FileNotFoundException e1) {
-                statusBar.setMessage("File not found. => " + currentFile.getAbsolutePath());
+    public static void insertFileContentIntoEditorArea() {
+        try {
+            sc = new Scanner(currentFile);
+            editorArea.setText("");
+
+            while (sc.hasNextLine()) {
+                editorArea.append(sc.nextLine() + "\n");
             }
+
+        } catch (FileNotFoundException e1) {
+            statusBar.setMessage("File not found. => " + currentFile.getAbsolutePath());
         }
     }
 }
